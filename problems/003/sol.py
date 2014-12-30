@@ -5,6 +5,10 @@
 import sys
 import math
 
+def factorByRho(n):
+	# TODO
+	return []
+
 def factor(n):
 	factors = []
 	maxFactor = math.sqrt(n) # factors cannot be larger than sqrt(n)
