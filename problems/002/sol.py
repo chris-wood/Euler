@@ -34,7 +34,7 @@ class L(object):
 	b = 0            # default to 0
 	m = (1, 0, 0, 1) # default to identity matrix
 	
-	def __init__(self, a, b, v1, v2, v3, v4):
+	def __init__(self, a, b, v1, v2, v3, v4, valueLimit = -1):
 		""" Constructor for L that initializes the (a,b) variables
 			and the product matrix.
 		"""
@@ -107,7 +107,7 @@ def matrixPowerTwo(base, p):
 	# Return the resulting object 
 	return result
 
-def fibPow(n, a, b):
+def fibPow(n, a, b, valueLimit = -1):
 	""" Implement L^{n}(a,b), which requires three parameters
 		for n, a, and b. It returns a tuple (f(n;a,b), f(n+1;a,b)).
 		
@@ -116,8 +116,21 @@ def fibPow(n, a, b):
 		nth power and then return the first pair
 		in L's evaluated tuple.
 	"""
-	base = L(a, b, 0, 1, 1, 1)
+	base = L(a, b, 0, 1, 1, 1, valueLimit)
 	return base.power(n)
+
+def fibValueSum(n, modulus, valueLimit): # modulus is assumed to be >= 2
+	ssum = 0
+	a = 0
+	b = 1
+	c = a + b
+	while (c < valueLimit):
+		if (c % modulus == 0):
+			ssum = ssum + c
+		c = a + b
+		a = b
+		b = c
+	return ssum
 
 # This is the fixed upper bound used for autonomous testing
 # of the fibPow function.
@@ -128,7 +141,12 @@ UPPER_BOUND = 100
 	If the user enters a valid input, run it on that
 	number, else run it with a pre-defined constant.
 """
-if (len(sys.argv) > 1):
+if (len(sys.argv) == 4):
+	# print fibPow(int(sys.argv[1]), 0, 1, int(sys.argv[2]))[0]
+	print fibValueSum(int(sys.argv[1]), int(sys.argv[2]), int(sys.argv[3]))
+elif (len(sys.argv) == 3):
+	print fibPow(int(sys.argv[1]), 0, 1, int(sys.argv[2]))[0]
+elif (len(sys.argv) == 2):
 	print fibPow(int(sys.argv[1]), 0, 1)[0]
 else:
 	print fibPow(UPPER_BOUND, 0, 1)[0]
