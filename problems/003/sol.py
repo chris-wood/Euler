@@ -5,9 +5,34 @@
 import sys
 import math
 
+def g(x, n):
+	return ((x ** 2) + 1) % n
+
+def gcd(a, b):
+	if (a == 0):
+		return b
+	elif (b == 0):
+		return a
+	elif (a > b):
+		ar = a % b # a = bq + r, br = r
+		return gcd(b, ar)
+	else:
+		br = b % a # b = aq + r, br = r
+		return gcd(a, br)
+
+# http://en.wikipedia.org/wiki/Pollard%27s_rho_algorithm
 def factorByRho(n):
-	# TODO
-	return []
+	x = 2
+	y = 2
+	d = 1
+	while d == 1:
+		x = g(x, n)
+		y = g(g(x, n), n)
+		d = gcd(abs(x - y), n)
+	if (d == n):
+		return []
+	else:
+		return [d]
 
 def factor(n):
 	factors = []
