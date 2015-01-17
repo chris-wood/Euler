@@ -23,16 +23,41 @@
 // 
 // Find the thirteen adjacent digits in the 1000-digit number that have the greatest product. What is the value of this product?
 
+import java.io.*;
+
 public class Solution {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		if (args.length != 2) {
-			System.err.println("usage: java Solution numberFile n")
+			System.err.println("usage: java Solution numberFile n");
 		}
 
 		String filename = args[0];
-		int limit = Integer.parseInteger(args[1]);
+		int limit = Integer.parseInt(args[1]) + 1;
 
-		// TODO
+		BufferedReader reader = new BufferedReader(new FileReader(filename));
+		String symbols = reader.readLine();
+		int symbolLength = symbols.length();
+
+		long[][] products = new long[limit][symbolLength];
+
+		for (int i = 0; i < symbolLength; i++) {
+			products[0][i] = 1; // k = 0
+		}
+
+		for (int k = 1; k < limit; k++) {
+			for (int i = 0; i < symbolLength - k + 1; i++) {
+				String substring = symbols.substring(i, i + k);
+				products[k][i] = products[k - 1][i] * Integer.parseInt(substring.substring(k - 1, k));
+			}
+		}
+
+		long max = 0;
+		for (int i = 0; i < products[limit - 1].length; i++) {
+			if (products[limit - 1][i] > max) {
+				max = products[limit - 1][i];
+			}
+		}
+		System.out.println(max);
 	}
 }
